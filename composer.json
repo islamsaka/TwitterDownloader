@@ -1,0 +1,31 @@
+{
+  "name": "any-downloader/twitter-downloader",
+  "type": "library",
+  "description": "Extract and download videos/images from Twitter",
+  "keywords": [
+    "twitter downloader",
+    "twitter video downloader",
+    "twitter video extractor"
+  ],
+  "homepage": "https://iwannacode.net",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oleksandr Pinchuk",
+      "email": "intracomof@gmail.com",
+      "homepage": "https://iwannacode.net",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.2.5",
+    "any-downloader/download-manager": "*",
+    "abraham/twitteroauth": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "AnyDownloader\\TwitterDownloader\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
