@@ -1,7 +1,7 @@
 {
   "name": "any-downloader/twitter-downloader",
   "type": "library",
-  "description": "Extract and download videos/images from Twitter",
+  "description": "Extract and download videos from Twitter",
   "keywords": [
     "twitter downloader",
     "twitter video downloader",
