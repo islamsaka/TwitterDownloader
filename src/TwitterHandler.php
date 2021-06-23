@@ -5,7 +5,7 @@ use AnyDownloader\DownloadManager\Exception\NothingToExtractException;
 use AnyDownloader\DownloadManager\Handler\BaseHandler;
 use AnyDownloader\DownloadManager\Model\FetchedResource;
 use AnyDownloader\DownloadManager\Model\ResourceItem\JPGResourceItem;
-use AnyDownloader\DownloadManager\Model\ResourceItem\MP4ResourceItemFormat;
+use AnyDownloader\DownloadManager\Model\ResourceItem\MP4ResourceItem;
 use AnyDownloader\DownloadManager\Model\URL;
 use AnyDownloader\TwitterDownloader\Exception\CanNotExtractMediaFromTwitter;
 use AnyDownloader\TwitterDownloader\Model\TwitterVideoFetchedResource;
@@ -65,7 +65,7 @@ final class TwitterHandler extends BaseHandler
                 foreach ($media->video_info->variants as $video) {
                     if ($video->content_type === 'video/mp4') {
                         $resource->addItem(
-                            MP4ResourceItemFormat::fromURL(URL::fromString($video->url), $video->bitrate)
+                            MP4ResourceItem::fromURL(URL::fromString($video->url), $video->bitrate)
                         );
                     }
                 }
