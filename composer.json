@@ -22,10 +22,21 @@
     "any-downloader/download-manager": "*",
     "abraham/twitteroauth": "dev-master"
   },
+  "require-dev": {
+    "phpunit/phpunit": "9.5.x-dev"
+  },
   "autoload": {
     "psr-4": {
       "AnyDownloader\\TwitterDownloader\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AnyDownloader\\TwitterDownloader\\\\Test\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
   },
   "minimum-stability": "dev"
 }

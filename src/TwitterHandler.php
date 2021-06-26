@@ -14,16 +14,12 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 final class TwitterHandler extends BaseHandler
 {
 
-    public function isValidUrl(URL $url): bool
-    {
-        if(!$url->includes('//twitter.com/')) {
-            return false;
-        }
-        if (!$url->includes('/status/')) {
-            return false;
-        }
-        return true;
-    }
+    /**
+     * @var string[]
+     */
+    protected $urlRegExPatterns = [
+        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s'
+    ];
 
     /**
      * @var TwitterOAuth
@@ -59,11 +55,11 @@ final class TwitterHandler extends BaseHandler
         try {
             $media = $response->extended_entities->media[0];
             $preview = JPGResourceItem::fromURL(URL::fromString($media->media_url_https));
-            $resource = new TwitterVideoFetchedResource($preview);
+            $resource = new TwitterVideoFetchedResource($url, $preview);
 
             if (is_array($media->video_info->variants) && !empty($media->video_info->variants)) {
                 foreach ($media->video_info->variants as $video) {
-                    if ($video->content_type === 'video/mp4') {
+                    if ($video->content_type === MP4ResourceItem::MIMEType()) {
                         $resource->addItem(
                             MP4ResourceItem::fromURL(URL::fromString($video->url), $video->bitrate)
                         );
