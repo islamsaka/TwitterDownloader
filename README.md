@@ -2,7 +2,7 @@
 Get video sources in different qualities with preview image from Twitter
 
 ## IMPORTANT: You need to register Twitter application
-## and provide <CONSUMER KEY> and <CONSUMER SECRET>
+## and provide CONSUMER KEY & CONSUMER SECRET
 
 Install via Composer
 ```
