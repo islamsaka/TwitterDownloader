@@ -7,7 +7,7 @@ use AnyDownloader\DownloadManager\Model\Attribute\HashtagsAttribute;
  * Class TwitterHashtagsAttribute
  * @package AnyDownloader\TwitterDownloader\Model\Attribute
  */
-class TwitterHashtagsAttribute extends HashtagsAttribute
+final class TwitterHashtagsAttribute extends HashtagsAttribute
 {
     /**
      * @param \stdClass $entities

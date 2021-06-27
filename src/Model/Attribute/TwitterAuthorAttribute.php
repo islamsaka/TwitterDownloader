@@ -8,7 +8,7 @@ use AnyDownloader\DownloadManager\Model\URL;
  * Class TwitterAuthorAttribute
  * @package AnyDownloader\TwitterDownloader\Model\Attribute
  */
-class TwitterAuthorAttribute extends AuthorAttribute
+final class TwitterAuthorAttribute extends AuthorAttribute
 {
 
     /**
