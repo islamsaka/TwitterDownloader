@@ -8,9 +8,17 @@ use AnyDownloader\DownloadManager\Model\ResourceItem\Image\JPGResourceItem;
 use AnyDownloader\DownloadManager\Model\ResourceItem\Video\MP4ResourceItem;
 use AnyDownloader\DownloadManager\Model\URL;
 use AnyDownloader\TwitterDownloader\Exception\CanNotExtractMediaFromTwitter;
+use AnyDownloader\TwitterDownloader\Model\Attribute\TwitterAuthorAttribute;
+use AnyDownloader\DownloadManager\Model\Attribute\IdAttribute;
+use AnyDownloader\DownloadManager\Model\Attribute\TextAttribute;
+use AnyDownloader\TwitterDownloader\Model\Attribute\TwitterHashtagsAttribute;
 use AnyDownloader\TwitterDownloader\Model\TwitterVideoFetchedResource;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
+/**
+ * Class TwitterHandler
+ * @package AnyDownloader\TwitterDownloader
+ */
 final class TwitterHandler extends BaseHandler
 {
 
@@ -56,6 +64,13 @@ final class TwitterHandler extends BaseHandler
             $media = $response->extended_entities->media[0];
             $preview = JPGResourceItem::fromURL(URL::fromString($media->media_url_https));
             $resource = new TwitterVideoFetchedResource($url, $preview);
+            $resource->addAttribute(new IdAttribute($response->id));
+            $resource->addAttribute(new TextAttribute($response->text));
+            $resource->addAttribute(TwitterAuthorAttribute::fromTwitterUserStdObj($response->user));
+
+            if ($response->entities) {
+                $resource->addAttribute(TwitterHashtagsAttribute::fromTwitterEntitiesStdObj($response->entities));
+            }
 
             if (is_array($media->video_info->variants) && !empty($media->video_info->variants)) {
                 foreach ($media->video_info->variants as $video) {
