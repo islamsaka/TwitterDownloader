@@ -85,7 +85,7 @@ final class TwitterHandler extends BaseHandler
                 }
             }
 
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             throw new NothingToExtractException();
         }
 
