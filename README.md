@@ -33,12 +33,42 @@ print_r($media->toArray());
 /**
 Array
 (
-    [preview] => Array
+    [source_url] => https://twitter.com/PassengersMovie/status/821025484150423557
+    [preview_image] => Array
         (
             [type] => image
             [format] => jpg
             [quality] =>
             [url] => https://pbs.twimg.com/media/C2GF3vxUQAArTD0.jpg
+            [mime_type] => image/jpg
+        )
+
+    [preview_video] => Array
+        (
+            [type] => video
+            [format] => mp4
+            [quality] => 832000
+            [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/480x480/JypbCoP9FFOf1IgE.mp4
+            [mime_type] => video/mp4
+        )
+
+    [attributes] => Array
+        (
+            [id] => 821025484150423557
+            [text] => Plan your escape aboard the Starship Avalon with #PassengersMovie - see it today! 🚀 🚀 🚀 https://t.co/dlNC50FhBu https://t.co/X0go99a4hO
+            [author] => Array
+                (
+                    [id] => 3651083671
+                    [avatar_url] => https://pbs.twimg.com/profile_images/834102207356116993/Z0dFwGnF_normal.jpg
+                    [full_name] => Passengers Movie
+                    [nickname] => PassengersMovie
+                )
+
+            [hashtags] => Array
+                (
+                    [0] => PassengersMovie
+                )
+
         )
 
     [items] => Array
@@ -49,6 +79,7 @@ Array
                     [format] => mp4
                     [quality] => 320000
                     [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/240x240/b6ImBrQddohap5-6.mp4
+                    [mime_type] => video/mp4
                 )
 
             [1] => Array
@@ -57,6 +88,7 @@ Array
                     [format] => mp4
                     [quality] => 1280000
                     [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/720x720/K8BEWmSeNsrQI_pA.mp4
+                    [mime_type] => video/mp4
                 )
 
             [2] => Array
@@ -65,12 +97,11 @@ Array
                     [format] => mp4
                     [quality] => 832000
                     [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/480x480/JypbCoP9FFOf1IgE.mp4
+                    [mime_type] => video/mp4
                 )
 
         )
-
 )
-
 
 **/
 ```
