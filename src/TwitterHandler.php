@@ -63,7 +63,8 @@ final class TwitterHandler extends BaseHandler
         try {
             $media = $response->extended_entities->media[0];
             $preview = JPGResourceItem::fromURL(URL::fromString($media->media_url_https));
-            $resource = new TwitterVideoFetchedResource($url, $preview);
+            $resource = new TwitterVideoFetchedResource($url);
+            $resource->setImagePreview($preview);
             $resource->addAttribute(new IdAttribute($response->id));
             $resource->addAttribute(new TextAttribute($response->text));
             $resource->addAttribute(TwitterAuthorAttribute::fromTwitterUserStdObj($response->user));
@@ -75,12 +76,15 @@ final class TwitterHandler extends BaseHandler
             if (is_array($media->video_info->variants) && !empty($media->video_info->variants)) {
                 foreach ($media->video_info->variants as $video) {
                     if ($video->content_type === MP4ResourceItem::MIMEType()) {
-                        $resource->addItem(
-                            MP4ResourceItem::fromURL(URL::fromString($video->url), $video->bitrate)
-                        );
+                        $videoItem = MP4ResourceItem::fromURL(URL::fromString($video->url), $video->bitrate);
+                        $resource->addItem($videoItem);
                     }
                 }
+                if (isset($videoItem) && $videoItem instanceof MP4ResourceItem) {
+                    $resource->setVideoPreview($videoItem);
+                }
             }
+
         } catch (\Exception $exception) {
             throw new NothingToExtractException();
         }
