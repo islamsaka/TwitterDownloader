@@ -33,7 +33,7 @@ class TwitterHandlerTest extends TestCase
     }
 
     /** @test */
-    public function handler_can_not_validates_given_wrong_twitter_url()
+    public function handler_can_not_validate_given_wrong_twitter_url()
     {
         $handler = new TwitterHandler(new TwitterOAuth('', ''));
         $url = URL::fromString('https://twitter.com/status/PassengersMovie/821025484150423557');
