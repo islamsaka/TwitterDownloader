@@ -6,6 +6,7 @@ use AnyDownloader\DownloadManager\Exception\NothingToExtractException;
 use AnyDownloader\DownloadManager\Exception\NotValidUrlException;
 use AnyDownloader\DownloadManager\Handler\BaseHandler;
 use AnyDownloader\DownloadManager\Model\FetchedResource;
+use AnyDownloader\DownloadManager\Model\ResourceItem\ImageResourceItem;
 use AnyDownloader\DownloadManager\Model\ResourceItem\ResourceItemFactory;
 use AnyDownloader\DownloadManager\Model\ResourceItem\Video\MP4ResourceItem;
 use AnyDownloader\DownloadManager\Model\ResourceItem\VideoResourceItem;
@@ -75,11 +76,11 @@ final class TwitterHandler extends BaseHandler
         if (!$response->extended_entities) {
             throw new NothingToExtractException();
         }
-
-        $media = $response->extended_entities->media[0];
-        $preview = ResourceItemFactory::fromURL(URL::fromString($media->media_url_https));
         $resource = new TwitterVideoFetchedResource($url);
-        $resource->setImagePreview($preview);
+        $media = $response->extended_entities->media[0];
+        if ($preview = ResourceItemFactory::fromURL(URL::fromString($media->media_url_https))) {
+            $resource->setImagePreview($preview);
+        }
         $resource->addAttribute(new IdAttribute($response->id));
         $resource->addAttribute(new TextAttribute($response->text));
         $resource->addAttribute(TwitterAuthorAttribute::fromTwitterUserStdObj($response->user));
@@ -90,8 +91,10 @@ final class TwitterHandler extends BaseHandler
 
         if (is_array($media->video_info->variants) && !empty($media->video_info->variants)) {
             foreach ($media->video_info->variants as $video) {
-                if ($video->content_type === MP4ResourceItem::MIMEType()) {
-                    $videoItem = MP4ResourceItem::fromURL(URL::fromString($video->url), $video->bitrate);
+                if (!$video->url) {
+                    continue;
+                }
+                if ($videoItem = ResourceItemFactory::fromURL(URL::fromString($video->url), (string)$video->bitrate)) {
                     $resource->addItem($videoItem);
                 }
             }
