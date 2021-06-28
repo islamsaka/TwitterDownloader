@@ -17,6 +17,14 @@ class TwitterHandlerTest extends TestCase
     }
 
     /** @test */
+    public function handler_validates_given_url_with_postfix()
+    {
+        $handler = new TwitterHandler(new TwitterOAuth('', ''));
+        $url = URL::fromString('https://www.twitter.com/PassengersMovie/status/821025484150423557/video/1');
+        $this->assertTrue($handler->isValidUrl($url));
+    }
+
+    /** @test */
     public function handler_validates_given_url_without_www()
     {
         $handler = new TwitterHandler(new TwitterOAuth('', ''));
