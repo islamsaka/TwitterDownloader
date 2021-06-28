@@ -55,14 +55,14 @@ final class TwitterHandler extends BaseHandler
      */
     public function fetchResource(URL $url): FetchedResource
     {
-        $origUrl = clone $url;
-        $url->followLocation();
+        $realUrl = clone $url;
+        $realUrl->followLocation();
 
-        if (!$this->isValidUrl($url)) {
+        if (!$this->isValidUrl($realUrl)) {
             throw new NotValidUrlException();
         }
 
-        preg_match("/status\/[0-9]+/", $url->getValue(), $twitId);
+        preg_match("/status\/[0-9]+/", $realUrl->getValue(), $twitId);
 
         if (empty($twitId)) {
             throw new NotValidUrlException();
