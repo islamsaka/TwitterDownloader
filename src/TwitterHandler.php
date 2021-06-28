@@ -1,14 +1,11 @@
 <?php
 namespace AnyDownloader\TwitterDownloader;
 
-use AnyDownloader\DownloadManager\Exception\CanNotMapGivenURLToResourceItemException;
 use AnyDownloader\DownloadManager\Exception\NothingToExtractException;
 use AnyDownloader\DownloadManager\Exception\NotValidUrlException;
 use AnyDownloader\DownloadManager\Handler\BaseHandler;
 use AnyDownloader\DownloadManager\Model\FetchedResource;
-use AnyDownloader\DownloadManager\Model\ResourceItem\ImageResourceItem;
 use AnyDownloader\DownloadManager\Model\ResourceItem\ResourceItemFactory;
-use AnyDownloader\DownloadManager\Model\ResourceItem\Video\MP4ResourceItem;
 use AnyDownloader\DownloadManager\Model\ResourceItem\VideoResourceItem;
 use AnyDownloader\DownloadManager\Model\URL;
 use AnyDownloader\TwitterDownloader\Exception\CanNotExtractMediaFromTwitter;
@@ -54,13 +51,16 @@ final class TwitterHandler extends BaseHandler
      * @return FetchedResource
      * @throws CanNotExtractMediaFromTwitter
      * @throws NothingToExtractException
-     * @throws CanNotMapGivenURLToResourceItemException
      * @throws NotValidUrlException
      */
     public function fetchResource(URL $url): FetchedResource
     {
-        $realUrl = $this->getRealURL($url);
-        preg_match("/status\/[0-9]+/", $realUrl->getValue(), $twitId);
+        $origUrl = clone $url;
+        $url->followLocations();
+        if (!$this->isValidUrl($url)) {
+            throw new NotValidUrlException();
+        }
+        preg_match("/status\/[0-9]+/", $url->getValue(), $twitId);
 
         if (empty($twitId)) {
             throw new NotValidUrlException();
@@ -68,7 +68,6 @@ final class TwitterHandler extends BaseHandler
 
         $twitId = ltrim($twitId[0], 'status/');
         $response = $this->client->get("statuses/show/{$twitId}");
-
         if ($response->errors) {
             throw new CanNotExtractMediaFromTwitter($response->errors[0]->message);
         }
@@ -76,7 +75,8 @@ final class TwitterHandler extends BaseHandler
         if (!$response->extended_entities) {
             throw new NothingToExtractException();
         }
-        $resource = new TwitterVideoFetchedResource($url);
+
+        $resource = new TwitterVideoFetchedResource($origUrl);
         $media = $response->extended_entities->media[0];
         if ($preview = ResourceItemFactory::fromURL(URL::fromString($media->media_url_https))) {
             $resource->setImagePreview($preview);
