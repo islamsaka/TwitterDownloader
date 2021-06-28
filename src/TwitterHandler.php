@@ -78,7 +78,7 @@ final class TwitterHandler extends BaseHandler
             throw new NothingToExtractException();
         }
 
-        $resource = new TwitterVideoFetchedResource($origUrl);
+        $resource = new TwitterVideoFetchedResource($url);
         $media = $response->extended_entities->media[0];
         if ($preview = ResourceItemFactory::fromURL(URL::fromString($media->media_url_https))) {
             $resource->setImagePreview($preview);
@@ -99,10 +99,8 @@ final class TwitterHandler extends BaseHandler
                 }
                 if ($videoItem = ResourceItemFactory::fromURL(URL::fromString($video->url), (string)$video->bitrate)) {
                     $resource->addItem($videoItem);
+                    $resource->setVideoPreview($videoItem);
                 }
-            }
-            if (isset($videoItem) && $videoItem instanceof VideoResourceItem) {
-                $resource->setVideoPreview($videoItem);
             }
         }
 
