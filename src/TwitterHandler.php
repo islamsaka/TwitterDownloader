@@ -1,10 +1,11 @@
 <?php
 namespace AnyDownloader\TwitterDownloader;
 
+use AnyDownloader\DownloadManager\Exception\CanNotMapGivenURLToResourceItemException;
 use AnyDownloader\DownloadManager\Exception\NothingToExtractException;
+use AnyDownloader\DownloadManager\Exception\NotValidUrlException;
 use AnyDownloader\DownloadManager\Handler\BaseHandler;
 use AnyDownloader\DownloadManager\Model\FetchedResource;
-use AnyDownloader\DownloadManager\Model\ResourceItem\Image\JPGResourceItem;
 use AnyDownloader\DownloadManager\Model\ResourceItem\ResourceItemFactory;
 use AnyDownloader\DownloadManager\Model\ResourceItem\Video\MP4ResourceItem;
 use AnyDownloader\DownloadManager\Model\ResourceItem\VideoResourceItem;
@@ -28,7 +29,8 @@ final class TwitterHandler extends BaseHandler
      * @var string[]
      */
     protected $urlRegExPatterns = [
-        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s'
+        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s',
+        '/(\/\/|www\.|)t\.co\/[a-zA-Z0-9]+/s'
     ];
 
     /**
@@ -50,12 +52,16 @@ final class TwitterHandler extends BaseHandler
      * @return FetchedResource
      * @throws CanNotExtractMediaFromTwitter
      * @throws NothingToExtractException
+     * @throws CanNotMapGivenURLToResourceItemException
+     * @throws NotValidUrlException
      */
     public function fetchResource(URL $url): FetchedResource
     {
+        /**
+         * @TODO: check short twitter urls (t.co)
+         */
         $urlParts = explode("/", $url->getValue());
-        $id = end($urlParts);
-
+        $id = explode('?', end($urlParts))[0];
         $response = $this->client->get("statuses/show/{$id}");
 
         if ($response->errors) {

@@ -25,6 +25,14 @@ class TwitterHandlerTest extends TestCase
     }
 
     /** @test */
+    public function handler_validates_given_short_url()
+    {
+        $handler = new TwitterHandler(new TwitterOAuth('', ''));
+        $url = URL::fromString('https://t.co/X0go99a4hO');
+        $this->assertTrue($handler->isValidUrl($url));
+    }
+
+    /** @test */
     public function handler_can_not_validates_given_facebook_url()
     {
         $handler = new TwitterHandler(new TwitterOAuth('', ''));
