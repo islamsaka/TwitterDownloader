@@ -29,9 +29,9 @@ final class TwitterHandler extends BaseHandler
      * @var string[]
      */
     protected $urlRegExPatterns = [
-        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s',
-        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+\/(.*)/s',
-        '/(\/\/|www\.|)t\.co\/[a-zA-Z0-9]+/s'
+        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/',
+        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+\/(.*)/',
+        '/(\/\/|www\.|)t\.co\/[a-zA-Z0-9]+/'
     ];
 
     /**
@@ -59,12 +59,14 @@ final class TwitterHandler extends BaseHandler
     public function fetchResource(URL $url): FetchedResource
     {
         $realUrl = $this->getRealURL($url);
+        preg_match("/status\/[0-9]+/", $realUrl->getValue(), $twitId);
 
-        $urlVal = explode('?',$realUrl->getValue())[0];
-        $id = explode("status/", $urlVal)[1];
-        $id = explode('/', $id)[0];
+        if (empty($twitId)) {
+            throw new NotValidUrlException();
+        }
 
-        $response = $this->client->get("statuses/show/{$id}");
+        $twitId = ltrim($twitId[0], 'status/');
+        $response = $this->client->get("statuses/show/{$twitId}");
 
         if ($response->errors) {
             throw new CanNotExtractMediaFromTwitter($response->errors[0]->message);
