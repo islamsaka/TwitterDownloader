@@ -29,8 +29,9 @@ final class TwitterHandler extends BaseHandler
      * @var string[]
      */
     protected $urlRegExPatterns = [
-        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s',
-        '/(\/\/|www\.|)t\.co\/[a-zA-Z0-9]+/s'
+        'full' => '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s',
+        'full_dirty' => '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+\/(.*)/s',
+        'short' => '/(\/\/|www\.|)t\.co\/[a-zA-Z0-9]+/s'
     ];
 
     /**
@@ -57,11 +58,12 @@ final class TwitterHandler extends BaseHandler
      */
     public function fetchResource(URL $url): FetchedResource
     {
-        /**
-         * @TODO: check short twitter urls (t.co)
-         */
-        $urlParts = explode("/", $url->getValue());
-        $id = explode('?', end($urlParts))[0];
+        $url = $this->getRealURL($url);
+
+        $urlVal = explode('?',$url->getValue())[0];
+        $id = explode("status/", $urlVal)[1];
+        $id = explode('/', $id)[0];
+
         $response = $this->client->get("statuses/show/{$id}");
 
         if ($response->errors) {
