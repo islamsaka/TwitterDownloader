@@ -56,10 +56,12 @@ final class TwitterHandler extends BaseHandler
     public function fetchResource(URL $url): FetchedResource
     {
         $origUrl = clone $url;
-        $url->followLocations();
+        $url->followLocation();
+
         if (!$this->isValidUrl($url)) {
             throw new NotValidUrlException();
         }
+
         preg_match("/status\/[0-9]+/", $url->getValue(), $twitId);
 
         if (empty($twitId)) {
@@ -81,6 +83,7 @@ final class TwitterHandler extends BaseHandler
         if ($preview = ResourceItemFactory::fromURL(URL::fromString($media->media_url_https))) {
             $resource->setImagePreview($preview);
         }
+
         $resource->addAttribute(new IdAttribute($response->id));
         $resource->addAttribute(new TextAttribute($response->text));
         $resource->addAttribute(TwitterAuthorAttribute::fromTwitterUserStdObj($response->user));
