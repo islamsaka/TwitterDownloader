@@ -29,9 +29,9 @@ final class TwitterHandler extends BaseHandler
      * @var string[]
      */
     protected $urlRegExPatterns = [
-        'full' => '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s',
-        'full_dirty' => '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+\/(.*)/s',
-        'short' => '/(\/\/|www\.|)t\.co\/[a-zA-Z0-9]+/s'
+        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+/s',
+        '/(\/\/|www\.|)twitter\.com\/[a-zA-Z0-9]+\/status\/[0-9]+\/(.*)/s',
+        '/(\/\/|www\.|)t\.co\/[a-zA-Z0-9]+/s'
     ];
 
     /**
