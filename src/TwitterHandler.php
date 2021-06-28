@@ -58,9 +58,9 @@ final class TwitterHandler extends BaseHandler
      */
     public function fetchResource(URL $url): FetchedResource
     {
-        $url = $this->getRealURL($url);
+        $realUrl = $this->getRealURL($url);
 
-        $urlVal = explode('?',$url->getValue())[0];
+        $urlVal = explode('?',$realUrl->getValue())[0];
         $id = explode("status/", $urlVal)[1];
         $id = explode('/', $id)[0];
 
