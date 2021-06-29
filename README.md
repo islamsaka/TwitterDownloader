@@ -33,7 +33,7 @@ print_r($media->toArray());
 /**
 Array
 (
-    [source_url] => https://twitter.com/PassengersMovie/status/821025484150423557
+    [source_url] => https://t.co/X0go99a4hO
     [preview_image] => Array
         (
             [type] => image
@@ -73,34 +73,39 @@ Array
 
     [items] => Array
         (
-            [0] => Array
+            [video] => Array
                 (
-                    [type] => video
-                    [format] => mp4
-                    [quality] => 320000
-                    [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/240x240/b6ImBrQddohap5-6.mp4
-                    [mime_type] => video/mp4
-                )
+                    [0] => Array
+                        (
+                            [type] => video
+                            [format] => mp4
+                            [quality] => 320000
+                            [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/240x240/b6ImBrQddohap5-6.mp4
+                            [mime_type] => video/mp4
+                        )
 
-            [1] => Array
-                (
-                    [type] => video
-                    [format] => mp4
-                    [quality] => 1280000
-                    [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/720x720/K8BEWmSeNsrQI_pA.mp4
-                    [mime_type] => video/mp4
-                )
+                    [1] => Array
+                        (
+                            [type] => video
+                            [format] => mp4
+                            [quality] => 1280000
+                            [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/720x720/K8BEWmSeNsrQI_pA.mp4
+                            [mime_type] => video/mp4
+                        )
 
-            [2] => Array
-                (
-                    [type] => video
-                    [format] => mp4
-                    [quality] => 832000
-                    [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/480x480/JypbCoP9FFOf1IgE.mp4
-                    [mime_type] => video/mp4
+                    [2] => Array
+                        (
+                            [type] => video
+                            [format] => mp4
+                            [quality] => 832000
+                            [url] => https://video.twimg.com/amplify_video/820082508054179840/vid/480x480/JypbCoP9FFOf1IgE.mp4
+                            [mime_type] => video/mp4
+                        )
+
                 )
 
         )
+
 )
 
 **/
