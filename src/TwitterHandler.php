@@ -98,7 +98,7 @@ final class TwitterHandler extends BaseHandler
                     continue;
                 }
 
-                $quality = $video->bitrate ?? '';
+                $quality = isset($video->bitrate) ? $video->bitrate/1000 : '';
                 if ($videoItem = ResourceItemFactory::fromURL(URL::fromString($video->url), (string)$quality)) {
                     $resource->addItem($videoItem);
                     $resource->setVideoPreview($videoItem);
