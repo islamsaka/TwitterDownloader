@@ -6,7 +6,6 @@ use AnyDownloader\DownloadManager\Exception\NotValidUrlException;
 use AnyDownloader\DownloadManager\Handler\BaseHandler;
 use AnyDownloader\DownloadManager\Model\FetchedResource;
 use AnyDownloader\DownloadManager\Model\ResourceItem\ResourceItemFactory;
-use AnyDownloader\DownloadManager\Model\ResourceItem\VideoResourceItem;
 use AnyDownloader\DownloadManager\Model\URL;
 use AnyDownloader\TwitterDownloader\Exception\CanNotExtractMediaFromTwitter;
 use AnyDownloader\TwitterDownloader\Model\Attribute\TwitterAuthorAttribute;
@@ -69,12 +68,12 @@ final class TwitterHandler extends BaseHandler
         }
 
         $twitId = ltrim($twitId[0], 'status/');
-        $response = $this->client->get("statuses/show/{$twitId}");
-        if ($response->errors) {
+        $response = $this->client->get("statuses/show/{$twitId}", ['tweet_mode' => 'extended']);
+        if (isset($response->errors)) {
             throw new CanNotExtractMediaFromTwitter($response->errors[0]->message);
         }
 
-        if (!$response->extended_entities) {
+        if (!isset($response->extended_entities)) {
             throw new NothingToExtractException();
         }
 
@@ -85,7 +84,8 @@ final class TwitterHandler extends BaseHandler
         }
 
         $resource->addAttribute(new IdAttribute($response->id));
-        $resource->addAttribute(new TextAttribute($response->text));
+        $text = $response->full_text ?? $response->text ?? '';
+        $resource->addAttribute(new TextAttribute($text));
         $resource->addAttribute(TwitterAuthorAttribute::fromTwitterUserStdObj($response->user));
 
         if ($response->entities) {
@@ -97,7 +97,9 @@ final class TwitterHandler extends BaseHandler
                 if (!$video->url) {
                     continue;
                 }
-                if ($videoItem = ResourceItemFactory::fromURL(URL::fromString($video->url), (string)$video->bitrate)) {
+
+                $quality = $video->bitrate ?? '';
+                if ($videoItem = ResourceItemFactory::fromURL(URL::fromString($video->url), (string)$quality)) {
                     $resource->addItem($videoItem);
                     $resource->setVideoPreview($videoItem);
                 }
