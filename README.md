@@ -13,7 +13,7 @@ You have two options of how to use this package
 
 1. Use it standalone
 
-```
+```php
 <?php
 use AnyDownloader\TwitterDownloader\TwitterHandler;
 use Abraham\TwitterOAuth\TwitterOAuth;
@@ -114,7 +114,7 @@ Array
 2. Use it with DownloadManager. 
 Useful in case if your application is willing to download files from different sources (i.e. has more than one download handler)
 
-```
+```php
 <?php
 use Abraham\TwitterOAuth\TwitterOAuth;
 use AnyDownloader\DownloadManager\DownloadManager;
