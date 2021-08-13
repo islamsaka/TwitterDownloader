@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.2.5",
+    "php": "^7.3",
     "any-downloader/download-manager": "*",
     "abraham/twitteroauth": "dev-master"
   },
